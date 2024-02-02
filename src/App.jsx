@@ -1,11 +1,13 @@
-import MiApi from './MiApi'
+import MiApi from "./MiApi"
+import "./App.css"
 
-function App() {
-
+const App = () => {
   return (
-    
-  <MiApi/>
+    <main className="App">
+      <h1>Buscador de películas</h1>
+      <MiApi />
+    </main>
   )
 }
 
-export default App
+export default App;

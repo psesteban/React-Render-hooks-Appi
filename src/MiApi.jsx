@@ -1,58 +1,46 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Cards from './Card';
+import React, { useState, useEffect } from 'react'
+import { Card, Button, Container, Col, Row } from 'react-bootstrap'
+import axios from 'axios'
+import Buscador from './Buscador'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './MiApi.css'
 
-function MiApi() {
-    const [query, setQuery] = useState('');
-    const [books, setBooks] = useState([]);
-    const [sortOrder, setSortOrder] = useState('relevance');
-    const inputRef = useRef(null);
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await fetch(
-            `https://www.googleapis.com/books/v1/volumes?q=${query}&orderBy=${sortOrder}`
-          );
-          const data = await response.json();
-          setBooks(data.items || []);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-  
-      fetchData();
-    }, [query, sortOrder]);
-  
-    const handleSearch = () => {
-      setQuery(inputRef.current.value);
-    };
-  
-    const handleSortChange = (event) => {
-      setSortOrder(event.target.value);
-    };
-  
-    return (
-      <div className="App">
-        <h1>Google Books Search</h1>
-        <div>
-          <label>
-            Search:
-            <input type="text" ref={inputRef} />
-          </label>
-          <button onClick={handleSearch}>Search</button>
-        </div>
-        <div>
-          <label>
-            Sort by:
-            <select onChange={handleSortChange} value={sortOrder}>
-              <option value="relevance">Relevance</option>
-              <option value="newest">Newest</option>
-            </select>
-          </label>
-        </div>
-        <Cards array={books} />
-      </div>
-    );
-  };
+const MiApi = () => {
+  const [result, setResult] = useState([])
 
-export default MiApi;
+  const fetchMovieApi = async (words) => {
+    try {
+      const response = await axios.get(`https://www.omdbapi.com/?apikey=49d525a5&r=json&type=movie&s=${words}`)
+      const data = await response.data
+      setResult(data.Search)
+      console.log(result)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    fetchMovieApi('star wars')
+  }, [])
+
+  return (
+    <section>
+      <Buscador setValueToSearch={fetchMovieApi} />
+      <Container fluid className='container'>
+        <Row>
+          {result.map((movie) => (
+            <Col key={movie.imdbID} sm={6} md={5} lg={3}>
+              <Card className='movie'>
+                <Card.Img variant='top' src={movie.Poster === 'N/A' ? './src/assets/unnamed.png' : movie.Poster} />
+                <Card.Body className='d-flex flex-column'>
+                  <Card.Title>{movie.Title}({movie.Year})</Card.Title>
+                  <Button variant='primary'>Información</Button>
+                </Card.Body>
+              </Card>
+            </Col>))}
+        </Row>
+      </Container>
+    </section>
+  )
+}
+
+export default MiApi

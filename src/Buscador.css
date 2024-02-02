@@ -1,0 +1,14 @@
+.buscador {
+    display: flex;
+    flex-direction: row;
+    margin: 1rem;
+    max-width: 100%;
+
+}
+
+.lupa {
+    padding-left: 97%;
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+}
