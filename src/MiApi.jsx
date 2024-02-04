@@ -8,7 +8,7 @@ import LoadingGif from './assets/rendering.gif'
 
 const MiApi = () => {
   const [result, setResult] = useState([])
-  const [sortOption, setSortOption] = useState('Year')
+  const [sortOption, setSortOption] = useState('Default')
   const [loading, setLoading] = useState(false)
 
   const fetchMovieApi = async (words) => {
@@ -31,11 +31,9 @@ const MiApi = () => {
     if (sortOption === 'Year') {
       const dataOrdenada = [...result].sort((a, b) => a.Year - b.Year)
       setResult(dataOrdenada)
-      console.log(result)
     } else if (sortOption === 'Title') {
       const dataOrdenada = [...result].sort((a, b) => a.Title.localeCompare(b.Title))
       setResult(dataOrdenada)
-      console.log(result)
     }
   }, [sortOption])
 
