@@ -2,13 +2,18 @@
     display: flex;
     flex-direction: row;
     margin: 1rem;
-    max-width: 100%;
+    width: 40rem;
+    justify-content: center;
 
 }
 
 .lupa {
-    padding-left: 97%;
+    padding-right: 0.5rem;
     align-self: center;
     justify-content: center;
     align-items: center;
+}
+
+.input {
+    display: flex;
 }

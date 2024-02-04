@@ -7,24 +7,37 @@ import './MiApi.css'
 
 const MiApi = () => {
   const [result, setResult] = useState([])
+  const [sortOption, setSortOption] = useState('Year')
 
   const fetchMovieApi = async (words) => {
     try {
       const response = await axios.get(`https://www.omdbapi.com/?apikey=49d525a5&r=json&type=movie&s=${words}`)
       const data = await response.data
       setResult(data.Search)
-      console.log(result)
     } catch (error) {
       console.log(error)
     }
   }
+
+  const selectOrder = (sortOption) => {
+    setSortOption(sortOption)
+  }
+
   useEffect(() => {
-    fetchMovieApi('star wars')
-  }, [])
+    if (sortOption === 'Year') {
+      const dataOrdenada = [...result].sort((a, b) => a.Year - b.Year)
+      setResult(dataOrdenada)
+      console.log(result)
+    } else if (sortOption === 'Title') {
+      const dataOrdenada = [...result].sort((a, b) => a.Title.localeCompare(b.Title))
+      setResult(dataOrdenada)
+      console.log(result)
+    }
+  }, [sortOption])
 
   return (
     <section>
-      <Buscador setValueToSearch={fetchMovieApi} />
+      <Buscador setValueToSearch={fetchMovieApi} optionSelect={selectOrder} />
       <Container fluid className='container'>
         <Row>
           {result.map((movie) => (
