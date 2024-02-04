@@ -15,6 +15,7 @@ const Buscador = ({ setValueToSearch, optionSelect }) => {
   const handleSubmit = (e) => {
     if (data.trim() !== '') {
       setValueToSearch(data)
+      setData('')
     }
   }
 
@@ -25,6 +26,7 @@ const Buscador = ({ setValueToSearch, optionSelect }) => {
 
   useEffect(() => {
     optionSelect(sortOption)
+    setSortOption('Default')
   }, [sortOption])
 
   return (
@@ -45,8 +47,8 @@ const Buscador = ({ setValueToSearch, optionSelect }) => {
           </Col>
           <Col><Button variant='primary' onClick={handleSubmit}>Buscar</Button>{' '}</Col>
           <Col>
-            <Form.Select className='order' onChange={handleSortChange}>
-              <option value='Year'>Ordenar por</option>
+            <Form.Select className='order' value={sortOption} onChange={handleSortChange}>
+              <option value='Default'>Ordenar por</option>
               <option value='Year'>Año</option>
               <option value='Title'>Título</option>
             </Form.Select>

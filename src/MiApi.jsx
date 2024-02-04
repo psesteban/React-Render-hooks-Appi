@@ -4,16 +4,20 @@ import axios from 'axios'
 import Buscador from './Buscador'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './MiApi.css'
+import LoadingGif from './assets/rendering.gif'
 
 const MiApi = () => {
   const [result, setResult] = useState([])
   const [sortOption, setSortOption] = useState('Year')
+  const [loading, setLoading] = useState(false)
 
   const fetchMovieApi = async (words) => {
     try {
+      setLoading(true)
       const response = await axios.get(`https://www.omdbapi.com/?apikey=49d525a5&r=json&type=movie&s=${words}`)
-      const data = await response.data
+      const data = response.data
       setResult(data.Search)
+      setLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -39,18 +43,21 @@ const MiApi = () => {
     <section>
       <Buscador setValueToSearch={fetchMovieApi} optionSelect={selectOrder} />
       <Container fluid className='container'>
-        <Row>
-          {result.map((movie) => (
-            <Col key={movie.imdbID} sm={6} md={5} lg={3}>
-              <Card className='movie'>
-                <Card.Img variant='top' src={movie.Poster === 'N/A' ? './src/assets/unnamed.png' : movie.Poster} />
-                <Card.Body className='d-flex flex-column'>
-                  <Card.Title>{movie.Title}({movie.Year})</Card.Title>
-                  <Button variant='primary'>Información</Button>
-                </Card.Body>
-              </Card>
-            </Col>))}
-        </Row>
+        {loading
+          ? (<img src={LoadingGif} className='bar' alt='Cargando...' />)
+          : (
+            <Row>
+              {result.map((movie) => (
+                <Col key={movie.imdbID} sm={6} md={5} lg={3}>
+                  <Card className='movie'>
+                    <Card.Img variant='top' src={movie.Poster === 'N/A' ? './src/assets/unnamed.png' : movie.Poster} />
+                    <Card.Body className='d-flex flex-column'>
+                      <Card.Title>{movie.Title}({movie.Year})</Card.Title>
+                      <Button variant='primary'>Información</Button>
+                    </Card.Body>
+                  </Card>
+                </Col>))}
+            </Row>)}
       </Container>
     </section>
   )

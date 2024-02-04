@@ -1,5 +1,6 @@
 .App {
     display: flex;
+    min-height: 100vh;
     background-image: url('./assets/imagen.jpg');
     background-size: 100%;
     background-position: center;
